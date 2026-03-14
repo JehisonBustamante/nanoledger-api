@@ -27,6 +27,8 @@ public class Transaction {
     @Column(nullable = false)
     private LocalDateTime timestamp = LocalDateTime.now(); // Fecha y hora en que ocurrió la transacción
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Entry> entries; // Lista de asientos (débitos y créditos) asociados a esta transacción
 }

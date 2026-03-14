@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Representa una cuenta financiera en el sistema.
@@ -31,6 +32,9 @@ public class Account {
     @Column(nullable = false)
     private BigDecimal balance = BigDecimal.ZERO; // Saldo de la cuenta manejado con precisión decimal
 
+    @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Entry> entries; // Relación con los asientos contables (debitos/créditos)
 

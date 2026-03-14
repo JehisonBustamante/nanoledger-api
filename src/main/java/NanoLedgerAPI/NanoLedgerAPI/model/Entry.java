@@ -3,6 +3,7 @@ package NanoLedgerAPI.NanoLedgerAPI.model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Representa un asiento contable individual (entrada) dentro de una transacción.
@@ -24,6 +25,9 @@ public class Entry {
     @JoinColumn(name = "account_id", nullable = false)
     private Account account; // Cuenta asociada a este asiento
 
+    @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToOne(optional = false)
     @JoinColumn(name = "transaction_id", nullable = false)
     private Transaction transaction; // Transacción que agrupa este asiento

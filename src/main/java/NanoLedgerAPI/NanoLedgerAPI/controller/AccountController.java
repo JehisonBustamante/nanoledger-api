@@ -1,7 +1,7 @@
 package NanoLedgerAPI.NanoLedgerAPI.controller;
 
 import NanoLedgerAPI.NanoLedgerAPI.model.Account;
-import NanoLedgerAPI.NanoLedgerAPI.repository.AccountRepository;
+import NanoLedgerAPI.NanoLedgerAPI.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountController {
 
-    private final AccountRepository accountRepository;
+    private final AccountService accountService;
 
     /**
      * Crea una nueva cuenta en el sistema.
@@ -27,8 +27,7 @@ public class AccountController {
      */
     @PostMapping
     public ResponseEntity<Account> createAccount(@RequestBody Account account) {
-        // Por ahora, guardamos directo para probar la conexión y persistencia
-        return ResponseEntity.ok(accountRepository.save(account));
+        return ResponseEntity.ok(accountService.createAccount(account));
     }
 
     /**
@@ -38,6 +37,6 @@ public class AccountController {
      */
     @GetMapping
     public ResponseEntity<List<Account>> getAllAccounts() {
-        return ResponseEntity.ok(accountRepository.findAll());
+        return ResponseEntity.ok(accountService.getAllAccounts());
     }
 }
