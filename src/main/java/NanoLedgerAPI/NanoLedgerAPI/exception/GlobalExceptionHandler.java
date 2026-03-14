@@ -12,13 +12,16 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(InsufficientBalanceException.class)
     public ResponseEntity<ErrorResponse> handleInsufficientBalance(InsufficientBalanceException ex) {
+        log.warn("Excepción de saldo insuficiente capturada: {}", ex.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(
             "Saldo insuficiente",
             LocalDateTime.now(),
@@ -29,6 +32,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccountNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleAccountNotFound(AccountNotFoundException ex) {
+        log.warn("Excepción de cuenta no encontrada capturada: {}", ex.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(
             "Cuenta no encontrada",
             LocalDateTime.now(),
@@ -39,6 +43,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException ex) {
+        log.warn("Excepción de argumento ilegal capturada: {}", ex.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(
             "Solicitud inválida",
             LocalDateTime.now(),
@@ -104,6 +109,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex) {
+        log.error("Excepción interna no manejada capturada: ", ex);
         ErrorResponse errorResponse = new ErrorResponse(
             "Error interno del servidor",
             LocalDateTime.now(),

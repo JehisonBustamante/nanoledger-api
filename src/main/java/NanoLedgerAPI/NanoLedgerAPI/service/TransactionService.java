@@ -10,6 +10,7 @@ import NanoLedgerAPI.NanoLedgerAPI.repository.AccountRepository;
 import NanoLedgerAPI.NanoLedgerAPI.repository.EntryRepository;
 import NanoLedgerAPI.NanoLedgerAPI.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ import java.time.LocalDateTime;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TransactionService {
 
     private final AccountRepository accountRepository;
@@ -36,8 +38,12 @@ public class TransactionService {
      */
     @Transactional
     public void processTransaction(TransferRequest request) {
+        log.info("Iniciando procesamiento de transacción de cuenta {} a cuenta {} por monto {}", 
+            request.getFromAccountId(), request.getToAccountId(), request.getAmount());
+
         // 1. Validación: Las cuentas de origen y destino deben ser diferentes
         if (request.getFromAccountId().equals(request.getToAccountId())) {
+            log.warn("Fallo de validación: Las cuentas origen y destino son iguales (ID: {})", request.getFromAccountId());
             throw new IllegalArgumentException("Las cuentas de origen y destino deben ser diferentes");
         }
 
@@ -50,6 +56,8 @@ public class TransactionService {
 
         // 3. Validación: Saldo suficiente en la cuenta de origen
         if (!fromAccount.hasEnoughBalance(request.getAmount())) {
+            log.warn("Fallo de validación: Saldo insuficiente en la cuenta {} (Balance: {}, Solicitado: {})", 
+                fromAccount.getAccountNumber(), fromAccount.getBalance(), request.getAmount());
             throw new InsufficientBalanceException("Saldo insuficiente en la cuenta: " + fromAccount.getAccountNumber() + 
                 ". Disponible: " + fromAccount.getBalance() + ", Solicitado: " + request.getAmount());
         }
@@ -94,6 +102,7 @@ public class TransactionService {
         entryRepository.save(debitEntry);
         entryRepository.save(creditEntry);
         
+        log.info("Transacción procesada exitosamente. ID Transacción: {}", transaction.getId());
         // Al terminar el método exitosamente, Spring confirma (commit) la transacción en la BD.
     }
 }

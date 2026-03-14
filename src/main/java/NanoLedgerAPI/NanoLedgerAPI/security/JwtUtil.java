@@ -2,8 +2,10 @@ package NanoLedgerAPI.NanoLedgerAPI.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +18,18 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    // Clave secreta generada de forma segura para HS256 (256 bits)
-    private final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    // Extraído de las variables de entorno/application.yaml
+    @Value("${jwt.secret}")
+    private String secret;
+
+    // Clave secreta interpretada a partir del String inyectado
+    private Key SECRET_KEY;
+
+    @PostConstruct
+    protected void init() {
+        // En producción debes asegurarte que la clave (el string) sea lo suficientemente larga (min 256 bits)
+        SECRET_KEY = Keys.hmacShaKeyFor(secret.getBytes());
+    }
 
     // El token expira en 10 horas
     private static final long JWT_TOKEN_VALIDITY = 1000 * 60 * 60 * 10;

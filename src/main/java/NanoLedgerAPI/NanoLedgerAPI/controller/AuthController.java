@@ -3,6 +3,7 @@ package NanoLedgerAPI.NanoLedgerAPI.controller;
 import NanoLedgerAPI.NanoLedgerAPI.security.JwtUtil;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
 
     private final JwtUtil jwtUtil;
@@ -24,10 +26,12 @@ public class AuthController {
         if ("admin".equals(authRequest.getUsername()) && "password".equals(authRequest.getPassword())) {
             
             // Generamos el token usando nuestro JwtUtil
+            log.info("Autenticacion exitosa para el usuario: {}", authRequest.getUsername());
             String token = jwtUtil.generateToken(authRequest.getUsername());
             
             return ResponseEntity.ok(new AuthResponse(token));
         } else {
+            log.warn("Intento de login fallido para el usuario: {}", authRequest.getUsername());
             return ResponseEntity.status(401).build(); // 401 Unauthorized
         }
     }
