@@ -1,4 +1,4 @@
-# NanoLedger API 
+# NanoLedger API
 
 > **Un motor transaccional robusto basado en el principio contable de partida doble, construido con Spring Boot y PostgreSQL.**
 
@@ -37,11 +37,11 @@ Poner el proyecto en marcha es trivial. El repositorio incluye un `docker-compos
 -Tener Java 17 y Maven listos (o usar simplemente `./mvnw`).
 
 ### 2. Levantar la Infraestructura
-Abre tu terminal en la raíz del proyecto y ejecuta la magia:
+Abrir el terminal en la raíz del proyecto y ejecuta:
 ```bash
 docker-compose up -d
 ```
-Esto levantará tu servidor PostgreSQL corriendo en el fondo en el puerto `5433` de la máquina anfitriona.
+Esto levantará el servidor PostgreSQL corriendo en el fondo en el puerto `5433` de la máquina anfitriona.
 
 ### 3. Exponer Variables de Entorno y Correr Spring
 Compila y corre el servidor usando el Wrapper de Maven en Windows/Linux:
@@ -59,7 +59,7 @@ export JWT_SECRET=49a2b5e7d8f9c1a3b2e4d6f8a0c5b7e9f1d3a5c7e9b2d4f6a8c0e2b4d6f8a0
 ---
 
 ## 📖 Documentación Automática de la API (Swagger UI)
-Una vez que veas en la consola que el servidor está corriendo en el puerto 8080 (gracias a los hermosos logs de SLF4J), explora y juega con la API visualmente.
+Una vez que veas en la consola que el servidor está corriendo en el puerto 8080 (gracias a los logs de SLF4J), explora y juega con la API visualmente.
 
 🔗 **Swagger UI Local:** [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
