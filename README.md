@@ -1,4 +1,4 @@
-# NanoLedger API 🏦💸
+# NanoLedger API 
 
 > **Un motor transaccional robusto basado en el principio contable de partida doble, construido con Spring Boot y PostgreSQL.**
 
