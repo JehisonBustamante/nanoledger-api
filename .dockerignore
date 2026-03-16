@@ -1,0 +1,17 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/resources/*.yaml
+!**/src/main/resources/*.properties
+
+.mvn/
+.git/
+.gitignore
+.github/
+.vscode/
+*.md
+mvnw
+mvnw.cmd
+Dockerfile
+.dockerignore
+docker-compose.yml
+nanoledger connect.session.sql
