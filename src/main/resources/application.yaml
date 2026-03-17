@@ -3,8 +3,8 @@ spring:
     compose:
       enabled: false
   datasource:
-    url: jdbc:postgresql://localhost:5432/nanoledger
-    username: postgres
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/nanoledger}
+    username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:1234} # Usar variable de entorno, fallback a 1234 localmente
     driver-class-name: org.postgresql.Driver
   jpa:
