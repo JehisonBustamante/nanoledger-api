@@ -24,18 +24,23 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 // Configurar políticas de acceso a rutas
                 .authorizeHttpRequests(auth -> auth
-                        // Rutas públicas: Autenticación, H2 Console (para pruebas) y Swagger UI
+                        // Rutas públicas: Autenticación
                         .requestMatchers("/api/auth/**").permitAll()
+                        // Rutas públicas: Swagger UI y documentación
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+                        // Rutas públicas: Health check y raíz
+                        .requestMatchers("/", "/health").permitAll()
+                        // Rutas públicas: H2 Console (para desarrollo/pruebas)
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         // Cualquier otra ruta requiere autenticación con JWT
-                        .anyRequest().authenticated()
-                )
+                        .anyRequest().authenticated())
                 // Habilitar frames para H2 console
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
-                // Configurar manejo de sesión como Stateless (cada request debe traer su propio token)
+                // Configurar manejo de sesión como Stateless (cada request debe traer su propio
+                // token)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // Añadir nuestro filtro JWT antes del filtro de autenticación estándar de Spring
+                // Añadir nuestro filtro JWT antes del filtro de autenticación estándar de
+                // Spring
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
